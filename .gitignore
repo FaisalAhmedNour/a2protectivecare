@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+test-results/
+playwright-report/
+*.tsbuildinfo
+.openai/*credential*
+qa/screenshots/
+*.tar.gz
