@@ -6,7 +6,7 @@ export const site = {
     'Explore the A2 Protective Care medicine catalog and prepare an availability inquiry on WhatsApp.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://a2-protective-care.well-oak-7339.chatgpt.site',
   whatsappNumber: WHATSAPP_NUMBER,
-  contactEndpoint: process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || '',
+  contactEndpoint: process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || '/api/contact',
   sampleMode: true,
   phone: '[PHONE NUMBER]',
   email: '[EMAIL]',

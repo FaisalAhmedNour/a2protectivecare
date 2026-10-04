@@ -16,8 +16,9 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <script dangerouslySetInnerHTML={{ __html: `(()=>{try{const m=localStorage.getItem('a2-theme')||'system';document.documentElement.dataset.theme=m}catch{}})()` }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrderProvider>
           <WebMCP />
           <Header />
+          {/* <div className="global-theme-control"><ThemeToggle /></div> */}
           <main id="main">{children}</main>
           <Footer />
           <div className="whatsapp-dock">

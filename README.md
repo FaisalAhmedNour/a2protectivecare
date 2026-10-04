@@ -1,6 +1,6 @@
 # A2 Protective Care
 
-Next.js App Router + strict TypeScript medicine catalog and company portfolio. Green visual identity, original generated concept images, responsive local image variants, locally hosted Manrope, and WhatsApp inquiry ordering. There is no online payment system or admin backend.
+Next.js App Router + strict TypeScript medicine catalog, company portfolio, and local-first admin workspace. Green visual identity, original generated concept images, responsive local image variants, locally hosted Manrope, optional MySQL persistence, and WhatsApp inquiry ordering. There is no online payment system.
 
 ## Run
 
@@ -44,7 +44,9 @@ Map, social links, legal text, and team profiles remain explicit content placeho
 
 ## Deployment and future admin
 
-`next build` exports server-rendered HTML and interactive islands to `out/`. The Sites manifest points at this static output. Static hosting must serve directory index files and return `404.html` for unknown routes. For a future server-backed admin, keep the public data repository interfaces, replace their internals with authenticated service access, remove `output: 'export'`, and add an authenticated `/admin` route group. Do not put administrative secrets or authorization checks only in client components.
+`next build` now produces a normal Next server because the admin APIs and MySQL repository require server execution. Run `npm run dev` for local work or `npm run build && npm start` for production mode. The existing Sites static preview remains an earlier catalog snapshot; deploy the upgraded app to a Node-capable host when a MySQL service is available.
+
+The `/admin` workspace uses the environment-seeded `ADMIN_EMAIL` and `ADMIN_PASSWORD` account, signed HTTP-only sessions, and server-side authorization. Without `DATABASE_URL`, content and inquiries use a clearly documented in-memory development adapter. With MySQL configured, run `database/schema.sql` and install `mysql2`; customer profiles, inquiries, contacts, and admin-managed content are persisted. Gallery supports external URLs by default and optional MP4/WebM blobs up to 50 MB.
 
 Use `npm run build` for the complete build. Its postbuild hook adds dot-separated aliases for Next.js RSC segment payloads affected by [the upstream Windows static-export path issue](https://github.com/vercel/next.js/issues/92339). It leaves already-correct exports unchanged and prevents prefetch 404 errors on static hosting. It does not change framework internals.
 

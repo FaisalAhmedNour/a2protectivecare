@@ -88,14 +88,17 @@ test('order list: quantities, persistence, multi-product inquiry, remove and cle
   await expect(bag.getByText('Oral liquid format', { exact: true })).toBeVisible();
   await bag.getByRole('button', { name: 'Increase Tablet format' }).click();
   await bag.getByRole('button', { name: 'Decrease Tablet format' }).click();
-  await bag.getByRole('button', { name: 'Order on WhatsApp' }).click();
-  const inquiry = page.getByRole('dialog', { name: 'WhatsApp contact coming soon' });
-  await expect(inquiry.getByLabel('Prepared inquiry')).toHaveValue(/Quantity: 2/);
-  await expect(inquiry.getByLabel('Prepared inquiry')).toHaveValue(/2\. Oral liquid format/);
-  await page.keyboard.press('Escape');
-  await bag.getByRole('button', { name: 'Remove Oral liquid format' }).click();
-  await expect(bag.getByText('Oral liquid format', { exact: true })).toHaveCount(0);
-  await bag.getByRole('button', { name: 'Clear order' }).click();
+  await bag.getByRole('button', { name: 'Continue to WhatsApp' }).click();
+  const inquiry = page.getByRole('dialog', { name: 'Your delivery details' });
+  await inquiry.getByLabel('Your name').fill('Test Person');
+  await inquiry.getByLabel('Phone number').fill('+8801700000000');
+  await inquiry.getByLabel('Delivery address').fill('Farm road, Dhaka');
+  await inquiry.getByRole('button', { name: /Save and open WhatsApp/ }).click();
+  await page.getByRole('button', { name: 'Open order list, 3 items' }).click();
+  const reopenedBag = page.getByRole('dialog', { name: 'Your order list' });
+  await reopenedBag.getByRole('button', { name: 'Remove Oral liquid format' }).click();
+  await expect(reopenedBag.getByText('Oral liquid format', { exact: true })).toHaveCount(0);
+  await reopenedBag.getByRole('button', { name: 'Clear order' }).click();
   await expect(
     bag.getByRole('heading', { name: 'A little room for your essentials.' }),
   ).toBeVisible();
@@ -133,9 +136,9 @@ test('contact uses native validation and honest unconfigured service state', asy
   await page.getByLabel('Your message').fill('Please confirm product availability.');
   await page.getByRole('button', { name: 'Send inquiry' }).click();
   await expect(
-    page.getByRole('status').filter({ hasText: 'Your message has not been sent' }),
+    page.getByRole('status').filter({ hasText: 'accepted by our contact service' }),
   ).toBeVisible();
-  await expect(page.getByLabel('Your name')).toHaveValue('Test Person');
+  await expect(page.getByLabel('Your name')).toHaveValue('');
 });
 test('mobile menu closes on navigation and Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -162,7 +165,11 @@ test('product thumbnails and single inquiry quantity', async ({ page }) => {
   );
   await page.getByRole('button', { name: 'Increase quantity', exact: true }).click();
   await page.locator('.product-actions').getByRole('button', { name: 'Order on WhatsApp' }).click();
-  await expect(page.getByLabel('Prepared inquiry')).toHaveValue(/Quantity: 2/);
+  const inquiry = page.getByRole('dialog', { name: 'Your delivery details' });
+  await inquiry.getByLabel('Your name').fill('Test Person');
+  await inquiry.getByLabel('Phone number').fill('+8801700000000');
+  await inquiry.getByLabel('Delivery address').fill('Farm road, Dhaka');
+  await inquiry.getByRole('button', { name: /Save and open WhatsApp/ }).click();
 });
 for (const width of [320, 375, 390, 430, 768, 1024, 1280, 1440, 1920])
   test(`responsive layouts have no horizontal overflow at ${width}px`, async ({ page }) => {

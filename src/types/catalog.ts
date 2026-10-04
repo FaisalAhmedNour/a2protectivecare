@@ -23,6 +23,7 @@ export interface Category {
   description: string;
   image: string;
   featured: boolean;
+  order?: number;
 }
 export interface TeamMember {
   id: string;
@@ -30,6 +31,7 @@ export interface TeamMember {
   designation: string;
   photo?: string;
   bio: string;
+  order?: number;
   social?: { label: string; url: string }[];
 }
 export interface GalleryItem {
@@ -39,6 +41,12 @@ export interface GalleryItem {
   description: string;
   category: string;
   order: number;
+  mediaType?: 'image' | 'video';
+  sourceType?: 'url' | 'blob';
+  mediaUrl?: string;
+  mimeType?: string;
+  mediaBlob?: string;
+  visible?: boolean;
 }
 export interface OrderLine {
   productId: string;

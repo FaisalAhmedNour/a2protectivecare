@@ -6,29 +6,34 @@ import { AddToOrder } from './order-provider';
 import { WhatsAppAction } from './whatsapp-action';
 import { Media } from './ui/media';
 export function ProductGallery({ product }: { product: Product }) {
+  const images = product.images && product.images.length > 0 ? product.images : ['/images/medicine.webp'];
   const [selected, setSelected] = useState(0);
+  const activeIndex = selected < images.length ? selected : 0;
+
   return (
     <div>
       <div className="product-main-image">
         <Media
-          key={selected}
-          src={product.images[selected]}
-          alt={`${product.name} — concept image ${selected + 1}`}
+          key={activeIndex}
+          src={images[activeIndex]}
+          alt={`${product.name} — image ${activeIndex + 1}`}
           priority
         />
       </div>
-      <div className="thumbnails">
-        {product.images.map((image, i) => (
-          <button
-            key={image}
-            aria-label={`View image ${i + 1}`}
-            aria-pressed={selected === i}
-            onClick={() => setSelected(i)}
-          >
-            <Media src={image} alt={`${product.name} thumbnail ${i + 1}`} sizes="96px" />
-          </button>
-        ))}
-      </div>
+      {images.length > 1 && (
+        <div className="thumbnails">
+          {images.map((image, i) => (
+            <button
+              key={image + i}
+              aria-label={`View image ${i + 1}`}
+              aria-pressed={activeIndex === i}
+              onClick={() => setSelected(i)}
+            >
+              <Media src={image} alt={`${product.name} thumbnail ${i + 1}`} sizes="96px" />
+            </button>
+          ))}
+        </div>
+      )}
       <p className="small muted" style={{ marginTop: 14 }}>
         Concept imagery. Actual product appearance may differ.
       </p>

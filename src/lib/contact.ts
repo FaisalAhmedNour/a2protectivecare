@@ -29,12 +29,12 @@ export async function submitContact(
       message:
         'Your message has not been sent. The contact service is not connected yet. Your entries are still here; please use WhatsApp once contact details are available.',
     };
-  const endpoint = new URL(site.contactEndpoint);
-  if (endpoint.protocol !== 'https:')
+  const endpoint = new URL(site.contactEndpoint, typeof window !== 'undefined' ? window.location.origin : site.url);
+  if (!site.contactEndpoint.startsWith('/') && endpoint.protocol !== 'https:')
     throw Error(
       'The contact service is not configured correctly. Please try another contact method.',
     );
-  const response = await fetch(endpoint, {
+  const response = await fetch(endpoint.toString(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),

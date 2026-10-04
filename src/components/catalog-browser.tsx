@@ -4,18 +4,18 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import { products } from '@/data/products';
 import { categories } from '@/data/categories';
 import { ProductCard } from './catalog-cards';
-export function CatalogBrowser({ categoryId }: { categoryId?: string }) {
+export function CatalogBrowser({ categoryId, productData = products, categoryData = categories }: { categoryId?: string; productData?: typeof products; categoryData?: typeof categories }) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(categoryId || 'all');
   const [sort, setSort] = useState('featured');
   const [limit, setLimit] = useState(8);
   const filtered = useMemo(
     () =>
-      products
+      productData
         .filter(
           (p) =>
             (category === 'all' || p.categoryId === category) &&
-            `${p.name} ${p.sku ?? ''} ${categories.find((c) => c.id === p.categoryId)?.name}`
+            `${p.name} ${p.sku ?? ''} ${categoryData.find((c) => c.id === p.categoryId)?.name ?? ''}`
               .toLowerCase()
               .includes(query.trim().toLowerCase()),
         )
@@ -26,7 +26,7 @@ export function CatalogBrowser({ categoryId }: { categoryId?: string }) {
               ? (a.salePrice ?? a.price ?? Infinity) - (b.salePrice ?? b.price ?? Infinity)
               : Number(b.featured ?? false) - Number(a.featured ?? false),
         ),
-    [category, query, sort],
+    [category, query, sort, productData, categoryData],
   );
   const reset = () => {
     setQuery('');
@@ -65,7 +65,7 @@ export function CatalogBrowser({ categoryId }: { categoryId?: string }) {
               }}
             >
               <option value="all">All categories</option>
-              {categories.map((c) => (
+              {categoryData.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>
@@ -94,7 +94,7 @@ export function CatalogBrowser({ categoryId }: { categoryId?: string }) {
         <>
           <div className="product-grid catalog-grid">
             {filtered.slice(0, limit).map((p) => (
-              <ProductCard key={p.id} product={p} headingLevel={2} />
+              <ProductCard key={p.id} product={p} headingLevel={2} categoryData={categoryData} />
             ))}
           </div>
           {limit < filtered.length && (

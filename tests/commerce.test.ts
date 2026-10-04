@@ -27,7 +27,7 @@ test('WhatsApp single inquiry encodes Unicode and punctuation and contains produ
   assert.match(message, /100/);
   assert.match(message, /https:\/\/example.com\/products\/tablet-format\//);
 });
-test('multiple products keep individual quantities and no unknown price is invented', () => {
+test('multiple products keep individual quantities and include configured prices', () => {
   const message = buildOrderMessage([
     { product: products[0], quantity: 2 },
     { product: products[1], quantity: 1 },
@@ -36,7 +36,7 @@ test('multiple products keep individual quantities and no unknown price is inven
   assert.match(message, /2\. Oral liquid format/);
   assert.match(message, /Quantity: 2/);
   assert.match(message, /Quantity: 1/);
-  assert.doesNotMatch(message, /Unit price:/);
+  assert.match(message, /Unit price: ৳280/);
 });
 test('no URL is generated for missing or invalid number', () => {
   for (const number of ['', '[WHATSAPP NUMBER]', 'javascript:1', '123', '0000000000'])
@@ -83,10 +83,13 @@ test('contact validates lengths and identifiers', () => {
   assert.ok(validateContact({ ...contact, message: 'hi' }));
   assert.ok(validateContact({ ...contact, phone: 'no phone' }));
 });
-test('unconfigured contact service never pretends to send', async () => {
-  const result = await submitContact(contact);
-  assert.equal(result.status, 'unconfigured');
-  assert.match(result.message, /not been sent/);
+test('local contact endpoint can acknowledge a saved message', async () => {
+  const originalEndpoint = site.contactEndpoint;
+  const originalFetch = globalThis.fetch;
+  site.contactEndpoint = 'https://contact.example.test/inquiries';
+  globalThis.fetch = async () => new Response(JSON.stringify({ success: true }), { status: 200 });
+  try { assert.equal((await submitContact(contact)).status, 'sent'); }
+  finally { site.contactEndpoint = originalEndpoint; globalThis.fetch = originalFetch; }
 });
 test('configured contact requires explicit server acknowledgement and preserves failures', async () => {
   const originalEndpoint = site.contactEndpoint;

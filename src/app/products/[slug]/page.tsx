@@ -1,27 +1,29 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { products, getProduct } from '@/data/products';
-import { categories } from '@/data/categories';
 import { ProductGallery, ProductPurchase } from '@/components/product-purchase';
 import { ProductCard } from '@/components/catalog-cards';
 import { Breadcrumb } from '@/components/page-heading';
 import { SectionHeading } from '@/components/sections';
 import { formatPrice } from '@/lib/utils';
 import { pageMetadata } from '@/lib/seo';
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
+import { getPublicCategories, getPublicProducts } from '@/server/repository';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const p = getProduct(slug);
+  const p = (await getPublicProducts()).find((item) => item.slug === slug);
   return p ? pageMetadata(p.name, p.shortDescription, `/products/${p.slug}/`) : {};
 }
 export default async function ProductDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const p = getProduct(slug);
+  const [productData, categoryData] = await Promise.all([getPublicProducts(), getPublicCategories()]);
+  const p = productData.find((item) => item.slug === slug);
   if (!p) notFound();
-  const category = categories.find((c) => c.id === p.categoryId)!;
+  const category = categoryData.find((c) => c.id === p.categoryId) || {
+    id: p.categoryId,
+    name: 'Collection',
+    slug: 'all',
+  };
   return (
     <div className="container page-content">
       <div className="page-hero">
@@ -93,14 +95,14 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
           href={`/categories/${category.slug}/`}
           label="View collection"
         />
-        <div className="product-grid">
-          {products
-            .filter((item) => item.categoryId === p.categoryId && item.id !== p.id)
-            .slice(0, 4)
-            .map((item) => (
-              <ProductCard key={item.id} product={item} />
-            ))}
-        </div>
+          <div className="product-grid">
+            {productData
+              .filter((item) => item.categoryId === p.categoryId && item.id !== p.id)
+              .slice(0, 4)
+              .map((item) => (
+                <ProductCard key={item.id} product={item} categoryData={categoryData} />
+              ))}
+          </div>
       </section>
     </div>
   );

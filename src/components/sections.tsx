@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight, ClipboardList, MessageCircle, ShoppingBag, UserRound } from 'lucide-react';
+import type { TeamMember } from '@/types/catalog';
 import { team } from '@/data/team';
 import { content } from '@/data/content';
 import { Media } from './ui/media';
@@ -91,13 +92,20 @@ export function Steps() {
     </section>
   );
 }
-export function TeamGrid({ headingLevel = 3 }: { headingLevel?: 2 | 3 }) {
+export function TeamGrid({
+  members,
+  headingLevel = 3,
+}: {
+  members?: TeamMember[];
+  headingLevel?: 2 | 3;
+}) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3';
+  const list = members && members.length > 0 ? members : team;
   return (
     <div className="team-grid">
-      {team.map((m, i) => (
-        <article key={m.id} className="team-card">
-          <div className={`team-photo team-photo-${i}`}>
+      {list.map((m, i) => (
+        <article key={m.id || i} className="team-card">
+          <div className={`team-photo team-photo-${i % 3}`}>
             {m.photo ? (
               <Media src={m.photo} alt={m.name} sizes="(max-width: 700px) 100vw, 33vw" />
             ) : (

@@ -2,20 +2,25 @@ import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, Layers, MessageCircle, ShoppingBag, Check } from 'lucide-react';
 import { Media } from '@/components/ui/media';
 import { WhatsAppAction } from '@/components/whatsapp-action';
-import { categories } from '@/data/categories';
-import { products } from '@/data/products';
 import { CategoryCard, ProductCard } from '@/components/catalog-cards';
 import { SectionHeading, Story, Steps, TeamGrid } from '@/components/sections';
 import { ContactCTA } from '@/components/layout/footer';
 import { pageMetadata } from '@/lib/seo';
 import { content } from '@/data/content';
 import { site } from '@/data/site';
+import { getPublicCategories, getPublicProducts, getPublicTeam } from '@/server/repository';
+export const dynamic = 'force-dynamic';
 export const metadata = pageMetadata(
   'Care, thoughtfully connected',
   'Explore the A2 Protective Care sample medicine catalog. Browse collections and prepare your WhatsApp inquiry.',
   '/',
 );
-export default function Home() {
+export default async function Home() {
+  const [categoryData, productData, teamData] = await Promise.all([
+    getPublicCategories(),
+    getPublicProducts(),
+    getPublicTeam(),
+  ]);
   return (
     <>
       <section className="hero container">
@@ -97,8 +102,8 @@ export default function Home() {
           label="All categories"
         />
         <div className="category-grid">
-          {categories.map((c, i) => (
-            <CategoryCard key={c.id} category={c} index={i} />
+          {categoryData.map((c, i) => (
+            <CategoryCard key={c.id} category={c} index={i} productData={productData} />
           ))}
         </div>
       </section>
@@ -115,10 +120,10 @@ export default function Home() {
             coming soon.
           </p>
           <div className="product-grid">
-            {products
+            {productData
               .filter((p) => p.featured)
               .map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <ProductCard key={p.id} product={p} categoryData={categoryData} />
               ))}
           </div>
         </div>
@@ -150,7 +155,7 @@ export default function Home() {
         <p className="section-note">
           Meet the people behind the brand soon. Team profiles are awaiting confirmation.
         </p>
-        <TeamGrid />
+        <TeamGrid members={teamData} />
       </section>
       <section className="gallery-preview container section">
         <SectionHeading

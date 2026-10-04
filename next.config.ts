@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
-  output: 'export',
   trailingSlash: true,
+  experimental: {
+    serverActions: { bodySizeLimit: '60mb' },
+  },
   images: {
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',

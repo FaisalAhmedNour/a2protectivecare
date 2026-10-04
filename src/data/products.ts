@@ -1,6 +1,6 @@
 import type { Product } from '@/types/catalog';
 // DEVELOPMENT DEMO DATA ONLY. These formats are not actual A2 products.
-// No prices, medical specifications, stock claims, or manufacturers are invented.
+// Prices below are development-only sample BDT values so the catalog and Order List can be exercised.
 const samples = [
   ['tablet-format', 'Tablet format', 'category-one', 'medicine'],
   ['oral-liquid-format', 'Oral liquid format', 'category-one', 'wellness'],
@@ -24,6 +24,7 @@ export const products: Product[] = samples.map(([slug, name, categoryId, image],
     'This entry demonstrates the catalog experience. It is not a verified medicine or an offer for sale. The confirmed product name, manufacturer, approved information, and any prescription requirements will appear here before launch.',
   featured: i < 4,
   newArrival: false,
+  price: [280, 360, 420, 190, 520, 680, 450, 390, 740][i],
   images: [`/images/${image}.webp`, '/images/hero.webp'],
   features: [
     'Product information awaiting verification',

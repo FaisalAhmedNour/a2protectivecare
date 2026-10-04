@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS a2_protective_care CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE a2_protective_care;
+
+CREATE TABLE IF NOT EXISTS admin_users (id VARCHAR(36) PRIMARY KEY, email VARCHAR(254) NOT NULL UNIQUE, password_hash CHAR(64) NOT NULL, role VARCHAR(32) NOT NULL DEFAULT 'admin', created_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS categories (id VARCHAR(80) PRIMARY KEY, name VARCHAR(160) NOT NULL, slug VARCHAR(180) NOT NULL UNIQUE, description TEXT NOT NULL, image VARCHAR(500) NOT NULL, featured BOOLEAN NOT NULL DEFAULT TRUE, sort_order INT NOT NULL DEFAULT 0, created_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS products (id VARCHAR(80) PRIMARY KEY, name VARCHAR(160) NOT NULL, slug VARCHAR(180) NOT NULL UNIQUE, sku VARCHAR(80), category_id VARCHAR(80) NOT NULL, short_description TEXT NOT NULL, description TEXT NOT NULL, price DECIMAL(12,2) NULL, sale_price DECIMAL(12,2) NULL, featured BOOLEAN NOT NULL DEFAULT FALSE, new_arrival BOOLEAN NOT NULL DEFAULT FALSE, in_stock BOOLEAN NULL, images JSON NOT NULL, features JSON NULL, specifications JSON NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, CONSTRAINT products_category_fk FOREIGN KEY (category_id) REFERENCES categories(id) ON UPDATE CASCADE);
+CREATE TABLE IF NOT EXISTS team_members (id VARCHAR(80) PRIMARY KEY, name VARCHAR(160) NOT NULL, designation VARCHAR(160) NOT NULL, photo LONGTEXT, bio TEXT NOT NULL, social JSON NULL, sort_order INT NOT NULL DEFAULT 0, created_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS gallery_items (id VARCHAR(80) PRIMARY KEY, title VARCHAR(200) NOT NULL, description TEXT NOT NULL, category VARCHAR(120) NOT NULL, image LONGTEXT NOT NULL, media_type ENUM('image','video') NOT NULL, source_type ENUM('url','blob') NOT NULL, media_url LONGTEXT, mime_type VARCHAR(120), media_blob LONGBLOB, visible BOOLEAN NOT NULL DEFAULT TRUE, sort_order INT NOT NULL DEFAULT 0, created_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS customers (id VARCHAR(36) PRIMARY KEY, name VARCHAR(160) NOT NULL, phone VARCHAR(20) NOT NULL UNIQUE, address TEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS contact_messages (id VARCHAR(36) PRIMARY KEY, name VARCHAR(160) NOT NULL, phone VARCHAR(20) NOT NULL, email VARCHAR(254) NOT NULL, subject VARCHAR(160) NOT NULL, message TEXT NOT NULL, status ENUM('new','read','archived') NOT NULL DEFAULT 'new', created_at DATETIME NOT NULL);
+CREATE TABLE IF NOT EXISTS inquiries (id VARCHAR(36) PRIMARY KEY, customer_id VARCHAR(36) NOT NULL, items JSON NOT NULL, total DECIMAL(12,2) NULL, whatsapp_message TEXT NOT NULL, created_at DATETIME NOT NULL, CONSTRAINT inquiries_customer_fk FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE RESTRICT);
+CREATE TABLE IF NOT EXISTS site_settings (setting_key VARCHAR(100) PRIMARY KEY, setting_value LONGTEXT NOT NULL, updated_at DATETIME NOT NULL);
+CREATE INDEX inquiries_created_idx ON inquiries(created_at);
+CREATE INDEX contact_status_idx ON contact_messages(status, created_at);
+

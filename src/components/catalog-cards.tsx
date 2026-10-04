@@ -9,17 +9,19 @@ import { AddToOrder } from './order-provider';
 export function ProductCard({
   product: p,
   headingLevel = 3,
+  categoryData = categories,
 }: {
   product: Product;
   headingLevel?: 2 | 3;
+  categoryData?: Category[];
 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3';
   return (
     <article className="product-card">
       <Link href={`/products/${p.slug}/`} className="product-image-link">
         <Media
-          src={p.images[0]}
-          alt={`${p.name} — sample packaging concept`}
+          src={p.images?.[0] || '/images/medicine.webp'}
+          alt={`${p.name} — packaging concept`}
           sizes="(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 25vw"
         />
         <span className="badge">
@@ -38,7 +40,7 @@ export function ProductCard({
         </span>
       </Link>
       <div className="product-meta">
-        <span className="small muted">{categories.find((c) => c.id === p.categoryId)?.name}</span>
+        <span className="small muted">{categoryData.find((c) => c.id === p.categoryId)?.name}</span>
         <Heading>
           <Link href={`/products/${p.slug}/`}>{p.name}</Link>
         </Heading>
@@ -59,27 +61,29 @@ export function CategoryCard({
   category: c,
   index = 0,
   headingLevel = 3,
+  productData = products,
 }: {
   category: Category;
   index?: number;
   headingLevel?: 2 | 3;
+  productData?: Product[];
 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3';
   return (
     <Link className="category-card" href={`/categories/${c.slug}/`}>
       <Media
-        src={c.image}
-        alt={`${c.name} sample collection`}
+        src={c.image || '/images/medicine.webp'}
+        alt={`${c.name} collection`}
         sizes="(max-width: 600px) 90vw, 25vw"
       />
       <div className="category-card-top">
-        <span>0{index + 1}</span>
-        <span>{products.filter((p) => p.categoryId === c.id).length} sample items</span>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <span>{productData.filter((p) => p.categoryId === c.id).length} items</span>
       </div>
       <div className="category-card-bottom">
         <div>
           <Heading>{c.name}</Heading>
-          <p>Placeholder collection</p>
+          <p>{c.description ? c.description.replace(/^\[CATEGORY DESCRIPTION\]\s*—\s*/i, '') : 'Collection'}</p>
         </div>
         <span className="circle-arrow">
           <ArrowUpRight size={19} />
