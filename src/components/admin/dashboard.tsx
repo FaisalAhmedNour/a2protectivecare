@@ -8,6 +8,7 @@ import {
   ExternalLink,
   LogOut,
   Mail,
+  MapPin,
   MessageSquare,
   Pencil,
   Phone,
@@ -18,6 +19,7 @@ import {
   Star,
   Trash2,
   Upload,
+  User,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -363,7 +365,12 @@ export function AdminDashboard({ initialData }: { initialData: unknown }) {
               setNotice={setNotice}
             />
           ) : active === 'inquiries' ? (
-            <ReadOnlyTable active={active} items={items} />
+            <InquiriesManager
+              inquiries={data.inquiries || []}
+              customers={data.customers || []}
+              load={load}
+              setNotice={setNotice}
+            />
           ) : (
             <div className="admin-list">
               {items.length ? (
@@ -1292,37 +1299,515 @@ function TextArea({
   );
 }
 
-function ReadOnlyTable({ active, items }: { active: string; items: Item[] }) {
+function InquiriesManager({
+  inquiries,
+  customers,
+  load,
+  setNotice,
+}: {
+  inquiries: Item[];
+  customers: Item[];
+  load: () => Promise<void>;
+  setNotice: (msg: string) => void;
+}) {
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<'all' | 'with-value' | 'multi-item'>('all');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const copyText = async (id: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {
+      alert('Could not copy automatically.');
+    }
+  };
+
+  const handleDeleteInquiry = async (id: string) => {
+    if (!confirm('Are you sure you want to permanently delete this inquiry record?')) return;
+    setDeletingId(id);
+    try {
+      const response = await fetch(`/api/admin/inquiries?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setNotice('Inquiry record deleted successfully.');
+        await load();
+      } else {
+        const res = await response.json().catch(() => ({}));
+        setNotice(res.error || 'Failed to delete inquiry.');
+      }
+    } catch {
+      setNotice('Network error deleting inquiry.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const processedInquiries = useMemo(() => {
+    return inquiries.map((inq, idx) => {
+      const id = String(inq.id || `inq-${idx}`);
+      const customerId = String(inq.customerId || inq.customer_id || '');
+      const matchedCustomer = customers.find((c) => c.id === customerId);
+
+      const customerName =
+        String(inq.customerName || matchedCustomer?.name || inq.name || '').trim() ||
+        'Unregistered Customer';
+      const customerPhone = String(
+        inq.customerPhone || matchedCustomer?.phone || inq.phone || '',
+      ).trim();
+      const customerAddress = String(
+        inq.customerAddress || matchedCustomer?.address || inq.address || '',
+      ).trim();
+
+      const items = (Array.isArray(inq.items) ? (inq.items as Item[]) : []).map((it) => {
+        const qty = Number(it.quantity) || 1;
+        const unitPrice = it.unitPrice != null ? Number(it.unitPrice) : undefined;
+        const subtotal =
+          it.subtotal != null
+            ? Number(it.subtotal)
+            : unitPrice != null
+              ? unitPrice * qty
+              : undefined;
+        return {
+          productId: String(it.productId || ''),
+          name: String(it.name || it.productId || 'Product Item'),
+          quantity: qty,
+          unitPrice,
+          subtotal,
+        };
+      });
+
+      const calculatedTotal = items.reduce(
+        (sum, it) => sum + (it.subtotal != null ? it.subtotal : 0),
+        0,
+      );
+      const total =
+        inq.total != null && Number(inq.total) > 0 ? Number(inq.total) : calculatedTotal;
+
+      const whatsappMessage = String(inq.whatsappMessage || inq.whatsapp_message || '');
+      const createdAt = String(inq.createdAt || inq.created_at || '');
+
+      return {
+        raw: inq,
+        id,
+        customerId,
+        customerName,
+        customerPhone,
+        customerAddress,
+        items,
+        total,
+        whatsappMessage,
+        createdAt,
+      };
+    });
+  }, [inquiries, customers]);
+
+  const filteredInquiries = useMemo(() => {
+    return processedInquiries.filter((inq) => {
+      if (filter === 'with-value' && inq.total <= 0) return false;
+      if (filter === 'multi-item' && inq.items.length <= 1) return false;
+
+      if (!search.trim()) return true;
+      const q = search.toLowerCase();
+      const matchText = `${inq.id} ${inq.customerName} ${inq.customerPhone} ${inq.customerAddress} ${inq.whatsappMessage} ${inq.items.map((i) => i.name).join(' ')}`.toLowerCase();
+      return matchText.includes(q);
+    });
+  }, [processedInquiries, filter, search]);
+
+  const stats = useMemo(() => {
+    const totalCount = processedInquiries.length;
+    const totalValue = processedInquiries.reduce((sum, i) => sum + (i.total || 0), 0);
+    const totalUnits = processedInquiries.reduce(
+      (sum, i) => sum + i.items.reduce((s, it) => s + (it.quantity || 1), 0),
+      0,
+    );
+    const uniqueCustomers = new Set(
+      processedInquiries.map((i) => i.customerPhone || i.customerId).filter(Boolean),
+    ).size;
+
+    return {
+      totalCount,
+      totalValue,
+      totalUnits,
+      uniqueCustomers,
+    };
+  }, [processedInquiries]);
+
+  const counts = useMemo(
+    () => ({
+      all: processedInquiries.length,
+      withValue: processedInquiries.filter((i) => i.total > 0).length,
+      multiItem: processedInquiries.filter((i) => i.items.length > 1).length,
+    }),
+    [processedInquiries],
+  );
+
   return (
-    <div className="admin-list">
-      {items.length ? (
-        items.map((item) => (
-          <article className="admin-row" key={item.id}>
-            <div>
-              <strong>
-                {display(item.name) ||
-                  display(item.subject) ||
-                  `Inquiry ${display(item.id).slice(0, 8)}`}
-              </strong>
-              <span>
-                {display(item.phone) ||
-                  display(item.email) ||
-                  display(item.createdAt) ||
-                  display(item.created_at)}
-              </span>
-            </div>
-            <p>
-              {active === 'contacts'
-                ? display(item.message)
-                : active === 'customers'
-                  ? display(item.address)
-                  : `${Array.isArray(item.items) ? item.items.length : 0} products`}
+    <div className="admin-contact-workspace">
+      {/* 1. Inquiries KPI Summary Statistics */}
+      <div
+        className="admin-stat-grid"
+        style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', margin: 0 }}
+      >
+        <div>
+          <span>Total Inquiries</span>
+          <strong>{stats.totalCount}</strong>
+        </div>
+        <div>
+          <span>Estimated Value</span>
+          <strong>৳{stats.totalValue.toLocaleString()}</strong>
+        </div>
+        <div>
+          <span>Items / Units</span>
+          <strong>{stats.totalUnits}</strong>
+        </div>
+        <div>
+          <span>Customers</span>
+          <strong>{stats.uniqueCustomers}</strong>
+        </div>
+      </div>
+
+      {/* 2. Inquiries Log List Container */}
+      <div className="admin-card-container">
+        <div className="admin-card-header">
+          <div>
+            <span className="eyebrow">Customer Direct Inquiries</span>
+            <h3>Inquiries Breakdown & Order Transcripts ({counts.all})</h3>
+            <p className="small muted" style={{ margin: '4px 0 0' }}>
+              Full breakdowns of product inquiries and orders submitted via WhatsApp & Cart checkout.
             </p>
-          </article>
-        ))
-      ) : (
-        <div className="admin-empty">No records yet.</div>
-      )}
+          </div>
+        </div>
+
+        {/* Filter Pills */}
+        <div className="admin-filter-pills">
+          <button
+            type="button"
+            className={`admin-filter-pill ${filter === 'all' ? 'active' : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            All Inquiries <span>({counts.all})</span>
+          </button>
+          <button
+            type="button"
+            className={`admin-filter-pill ${filter === 'with-value' ? 'active' : ''}`}
+            onClick={() => setFilter('with-value')}
+          >
+            With Priced Value <span>({counts.withValue})</span>
+          </button>
+          <button
+            type="button"
+            className={`admin-filter-pill ${filter === 'multi-item' ? 'active' : ''}`}
+            onClick={() => setFilter('multi-item')}
+          >
+            Multi-Item Orders <span>({counts.multiItem})</span>
+          </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="admin-search-wrap">
+          <Search size={16} />
+          <input
+            type="search"
+            placeholder="Search inquiries by customer name, phone, product name, or inquiry ID..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {/* Inquiry Items List */}
+        {filteredInquiries.length > 0 ? (
+          <div className="admin-inbox-grid">
+            {filteredInquiries.map((inq) => {
+              const rawPhone = inq.customerPhone.replace(/\D/g, '');
+              const waReplyText = encodeURIComponent(
+                `Hello ${inq.customerName}, regarding your inquiry #${inq.id.slice(0, 8)} at A2 Protective Care: We received your request and would like to confirm your order details.`,
+              );
+
+              return (
+                <article
+                  key={inq.id}
+                  className="admin-inbox-item"
+                  style={{ borderLeft: '4px solid var(--primary)', padding: '18px' }}
+                >
+                  {/* Top Bar: Inquiry ID, Date, BDT Total */}
+                  <div className="admin-inbox-head">
+                    <div>
+                      <div className="admin-inbox-sender">
+                        <strong style={{ fontSize: '1.05rem' }}>
+                          Inquiry #{inq.id.slice(0, 10)}
+                        </strong>
+                        <span
+                          className="admin-badge-pill"
+                          style={{ margin: 0, textTransform: 'none', fontWeight: 600 }}
+                        >
+                          {inq.items.length} product{inq.items.length !== 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      <div className="admin-inbox-meta" style={{ marginTop: 6, gap: 16 }}>
+                        <span>
+                          <Clock size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />
+                          {inq.createdAt
+                            ? new Date(inq.createdAt).toLocaleString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })
+                            : 'Recent'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {inq.total > 0 && (
+                      <div style={{ textAlign: 'right' }}>
+                        <span
+                          style={{
+                            display: 'block',
+                            fontSize: '0.72rem',
+                            color: 'var(--muted)',
+                            textTransform: 'uppercase',
+                            fontWeight: 700,
+                          }}
+                        >
+                          Total Estimate
+                        </span>
+                        <strong style={{ color: 'var(--primary)', fontSize: '1.25rem' }}>
+                          ৳{inq.total.toLocaleString()}
+                        </strong>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Customer Information Box */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 16,
+                      background: 'var(--surface)',
+                      border: '1px solid var(--border)',
+                      borderRadius: 'var(--radius)',
+                      padding: '10px 14px',
+                      fontSize: '0.86rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <User size={15} style={{ color: 'var(--primary)' }} />
+                      <strong>{inq.customerName}</strong>
+                    </div>
+
+                    {inq.customerPhone ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <Phone size={15} style={{ color: 'var(--primary)' }} />
+                        <a
+                          href={`tel:${inq.customerPhone}`}
+                          style={{ color: 'var(--primary)', textDecoration: 'underline' }}
+                        >
+                          {inq.customerPhone}
+                        </a>
+                      </div>
+                    ) : (
+                      <span style={{ color: 'var(--muted)' }}>(No phone provided)</span>
+                    )}
+
+                    {inq.customerAddress && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 200, flex: 1 }}>
+                        <MapPin size={15} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+                        <span style={{ color: 'var(--muted)' }}>{inq.customerAddress}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Itemized Products Breakdown Table */}
+                  {inq.items.length > 0 && (
+                    <div style={{ overflowX: 'auto' }}>
+                      <table className="admin-inquiry-table" style={{ margin: '6px 0 0' }}>
+                        <thead>
+                          <tr style={{ background: 'var(--surface)' }}>
+                            <th style={{ fontWeight: 700 }}>Item / Product</th>
+                            <th style={{ width: 80, textAlign: 'center', fontWeight: 700 }}>Quantity</th>
+                            <th style={{ width: 110, textAlign: 'right', fontWeight: 700 }}>Unit Price</th>
+                            <th style={{ width: 120, textAlign: 'right', fontWeight: 700 }}>Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {inq.items.map((item, idx) => (
+                            <tr key={idx}>
+                              <td>
+                                <strong>{item.name}</strong>
+                                {item.productId && (
+                                  <span
+                                    style={{
+                                      display: 'block',
+                                      fontSize: '0.72rem',
+                                      color: 'var(--muted)',
+                                    }}
+                                  >
+                                    ID: {item.productId}
+                                  </span>
+                                )}
+                              </td>
+                              <td style={{ textAlign: 'center' }}>
+                                <span className="admin-count-pill" style={{ margin: 0 }}>
+                                  {item.quantity}
+                                </span>
+                              </td>
+                              <td style={{ textAlign: 'right' }}>
+                                {item.unitPrice != null && item.unitPrice > 0
+                                  ? `৳${item.unitPrice.toLocaleString()}`
+                                  : '—'}
+                              </td>
+                              <td style={{ textAlign: 'right', fontWeight: 600 }}>
+                                {item.subtotal != null && item.subtotal > 0
+                                  ? `৳${item.subtotal.toLocaleString()}`
+                                  : '—'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        {inq.total > 0 && (
+                          <tfoot>
+                            <tr style={{ borderTop: '2px solid var(--border)' }}>
+                              <td colSpan={3} style={{ textAlign: 'right', fontWeight: 700 }}>
+                                Inquiry Grand Total:
+                              </td>
+                              <td
+                                style={{
+                                  textAlign: 'right',
+                                  fontWeight: 750,
+                                  color: 'var(--primary)',
+                                  fontSize: '0.95rem',
+                                }}
+                              >
+                                ৳{inq.total.toLocaleString()}
+                              </td>
+                            </tr>
+                          </tfoot>
+                        )}
+                      </table>
+                    </div>
+                  )}
+
+                  {/* WhatsApp Message Log Transcript */}
+                  {Boolean(inq.whatsappMessage) && (
+                    <div
+                      style={{
+                        background: 'var(--surface)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 'var(--radius)',
+                        padding: '12px 14px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: 8,
+                        }}
+                      >
+                        <span
+                          className="eyebrow"
+                          style={{
+                            fontSize: '0.7rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
+                          }}
+                        >
+                          <MessageSquare size={13} style={{ color: 'var(--primary)' }} />
+                          WhatsApp Order Message Transcript
+                        </span>
+                        <button
+                          type="button"
+                          className="button button-outline"
+                          style={{ padding: '3px 9px', fontSize: '0.74rem' }}
+                          onClick={() => copyText(inq.id, inq.whatsappMessage)}
+                        >
+                          {copiedId === inq.id ? (
+                            <>
+                              <Check size={13} /> Copied!
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={13} /> Copy Message
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      <pre
+                        style={{
+                          margin: 0,
+                          fontSize: '0.8rem',
+                          lineHeight: 1.5,
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-word',
+                          color: 'var(--text)',
+                          fontFamily: 'inherit',
+                        }}
+                      >
+                        {inq.whatsappMessage}
+                      </pre>
+                    </div>
+                  )}
+
+                  {/* Actions Bar */}
+                  <div className="admin-inbox-actions">
+                    <div className="admin-inbox-btn-group">
+                      {rawPhone && (
+                        <a
+                          href={`https://wa.me/${rawPhone}?text=${waReplyText}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="button button-outline"
+                          style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+                          title="Open WhatsApp chat with customer"
+                        >
+                          <MessageSquare size={14} /> WhatsApp Reply
+                        </a>
+                      )}
+                      {inq.customerPhone && (
+                        <a
+                          href={`tel:${inq.customerPhone}`}
+                          className="button button-outline"
+                          style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+                          title="Call customer directly"
+                        >
+                          <Phone size={14} /> Call {inq.customerPhone}
+                        </a>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="icon-button danger"
+                      onClick={() => handleDeleteInquiry(inq.id)}
+                      disabled={deletingId === inq.id}
+                      title="Delete this inquiry record"
+                      aria-label="Delete inquiry"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="admin-empty" style={{ padding: '40px 20px' }}>
+            {search.trim()
+              ? 'No inquiries match your search filter.'
+              : filter === 'all'
+                ? 'No inquiries recorded yet. Inquiries placed by visitors will appear here with full product breakdowns.'
+                : `No inquiries match the "${filter}" filter.`}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

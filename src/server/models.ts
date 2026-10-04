@@ -30,10 +30,14 @@ export type InquiryItem = {
 export type Inquiry = {
   id: string;
   customerId: string;
+  customerName?: string;
+  customerPhone?: string;
+  customerAddress?: string;
   items: InquiryItem[];
   total?: number;
   whatsappMessage: string;
   createdAt: string;
+  created_at?: string;
 };
 export type GalleryRecord = GalleryItem & {
   mediaType: 'image' | 'video';

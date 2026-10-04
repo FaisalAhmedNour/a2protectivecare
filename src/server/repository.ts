@@ -107,7 +107,22 @@ export async function getSnapshot(): Promise<AdminSnapshot> {
       })) as unknown as GalleryRecord[],
       customers: customers.map((row) => ({ ...row, inquiryCount: Number(row.inquiry_count || 0) })) as Customer[],
       contacts: contacts as ContactMessage[],
-      inquiries: inquiries.map((row) => ({ ...row, items: parse(row.items, []), total: row.total == null ? undefined : Number(row.total) })) as unknown as Inquiry[],
+      inquiries: inquiries.map((row) => {
+        const customerId = String(row.customer_id || row.customerId || '');
+        const customer = (customers as Customer[]).find((c) => c.id === customerId);
+        return {
+          ...row,
+          id: String(row.id),
+          customerId,
+          customerName: customer?.name || row.customerName || '',
+          customerPhone: customer?.phone || row.customerPhone || '',
+          customerAddress: customer?.address || row.customerAddress || '',
+          items: parse(row.items, []),
+          total: row.total == null ? undefined : Number(row.total),
+          whatsappMessage: String(row.whatsapp_message || row.whatsappMessage || ''),
+          createdAt: String(row.created_at || row.createdAt || ''),
+        };
+      }) as unknown as Inquiry[],
       contactInfo,
     };
   } catch {
@@ -145,9 +160,19 @@ export async function upsertCustomer(input: { name: string; phone: string; addre
 export async function createInquiry(input: { customerId: string; items: InquiryItem[]; whatsappMessage: string }) {
   const validItems = input.items.filter((item) => item.quantity > 0);
   if (!validItems.length) throw new Error('Add at least one product.');
-  const inquiry: Inquiry = { id: randomUUID(), customerId: input.customerId, items: validItems, total: validItems.every((item) => item.subtotal !== undefined) ? validItems.reduce((sum, item) => sum + (item.subtotal || 0), 0) : undefined, whatsappMessage: input.whatsappMessage, createdAt: now() };
-  memory.inquiries.unshift(inquiry);
   const customer = memory.customers.find((item) => item.id === input.customerId);
+  const inquiry: Inquiry = {
+    id: randomUUID(),
+    customerId: input.customerId,
+    customerName: customer?.name,
+    customerPhone: customer?.phone,
+    customerAddress: customer?.address,
+    items: validItems,
+    total: validItems.every((item) => item.subtotal !== undefined) ? validItems.reduce((sum, item) => sum + (item.subtotal || 0), 0) : undefined,
+    whatsappMessage: input.whatsappMessage,
+    createdAt: now(),
+  };
+  memory.inquiries.unshift(inquiry);
   if (customer) customer.inquiryCount = (customer.inquiryCount || 0) + 1;
   if (usingDatabase()) {
     try {
