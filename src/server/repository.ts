@@ -14,7 +14,7 @@ const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 export const defaultContactInfo: ContactInfo = {
   phone: '+880 1711-000000',
   whatsappNumber: '+880 1711-000000',
-  email: 'care@a2protectivecare.com',
+  email: 'care@a2protectiveagrocare.com',
   address: 'Road 11, Banani, Dhaka-1213, Bangladesh',
   hours: 'Saturday – Thursday: 9:00 AM – 8:00 PM',
   title: 'Let’s talk about what you need.',

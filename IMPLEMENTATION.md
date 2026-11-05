@@ -11,4 +11,4 @@ The workspace was empty: no repository, framework, assets, brand guidelines, env
 
 ## Content launch requirements
 
-The user confirmed the name A2 Protective Care, green brand color, and medicine product type. Replace sample products/concept images, the provisional logo, team placeholders, company story, contact details, and legal drafts with verified business content. Supply a real WhatsApp number and contact service endpoint. Never claim the form sent a message without a successful configured service response. Sample mode is noindex until explicitly disabled in site settings.
+The user confirmed the name A2 Protective Agro Care, green brand color, and medicine product type. Replace sample products/concept images, the provisional logo, team placeholders, company story, contact details, and legal drafts with verified business content. Supply a real WhatsApp number and contact service endpoint. Never claim the form sent a message without a successful configured service response. Sample mode is noindex until explicitly disabled in site settings.

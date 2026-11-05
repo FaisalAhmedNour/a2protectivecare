@@ -76,7 +76,7 @@ export function AdminDashboard({ initialData }: { initialData: unknown }) {
     return (init as ContactInfoItem) || {
       phone: '+880 1711-000000',
       whatsappNumber: '+880 1711-000000',
-      email: 'care@a2protectivecare.com',
+      email: 'care@a2protectiveagrocare.com',
       address: 'Road 11, Banani, Dhaka-1213, Bangladesh',
       hours: 'Saturday – Thursday: 9:00 AM – 8:00 PM',
       title: 'Let’s talk about what you need.',
@@ -224,7 +224,7 @@ export function AdminDashboard({ initialData }: { initialData: unknown }) {
     <main className="admin-shell">
       <header className="admin-topbar">
         <div>
-          <span className="admin-kicker">A2 PROTECTIVE CARE</span>
+          <span className="admin-kicker">A2 PROTECTIVE AGRO CARE</span>
           <h1>Content control room</h1>
         </div>
         <button
@@ -1524,7 +1524,7 @@ function InquiriesManager({
             {filteredInquiries.map((inq) => {
               const rawPhone = inq.customerPhone.replace(/\D/g, '');
               const waReplyText = encodeURIComponent(
-                `Hello ${inq.customerName}, regarding your inquiry #${inq.id.slice(0, 8)} at A2 Protective Care: We received your request and would like to confirm your order details.`,
+                `Hello ${inq.customerName}, regarding your inquiry #${inq.id.slice(0, 8)} at A2 Protective Agro Care: We received your request and would like to confirm your order details.`,
               );
 
               return (
@@ -2931,7 +2931,7 @@ function ContactsManager({
               const status = msg.status || 'new';
               const rawPhone = String(msg.phone || '').replace(/\D/g, '');
               const waText = encodeURIComponent(
-                `Hello ${msg.name || 'there'}, thank you for contacting A2 Protective Care regarding your inquiry: "${msg.subject || 'Product Inquiry'}". How can we assist you?`
+                `Hello ${msg.name || 'there'}, thank you for contacting A2 Protective Agro Care regarding your inquiry: "${msg.subject || 'Product Inquiry'}". How can we assist you?`
               );
               return (
                 <article

@@ -1,4 +1,4 @@
-# A2 Protective Care QA
+# A2 Protective Agro Care QA
 
 Validated 27 September 2026 on Windows with Node 24, Next.js 16.3.6, and headless Microsoft Edge.
 
@@ -25,7 +25,7 @@ Validated 27 September 2026 on Windows with Node 24, Next.js 16.3.6, and headles
 
 ## Content and integration boundaries
 
-- Confirmed: A2 Protective Care, green brand color, Bangladeshi brand, medicine product type.
+- Confirmed: A2 Protective Agro Care, green brand color, Bangladeshi brand, medicine product type.
 - Category One–Four, all product listings, team records, history/mission/vision/values, contact details, map, and legal policies are explicit placeholders or drafts. No fabricated offers, stock, medical claims, credentials, reviews, or people are presented as real.
 - Generated concept imagery is labeled, local, optimized into responsive WebP variants, and documented in `assets/PROVENANCE.md`. No reference-site assets are copied. Manrope is self-hosted.
 - WhatsApp URL/message logic is tested without sending an order. A real business number and physical mobile WhatsApp/Web/Desktop handoff remain unverified because none was supplied. The unconfigured UI offers a copyable inquiry and clearly says it was not sent.

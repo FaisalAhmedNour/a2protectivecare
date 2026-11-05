@@ -1,4 +1,4 @@
-# A2 Protective Care
+# A2 Protective Agro Care
 
 Next.js App Router + strict TypeScript medicine catalog, company portfolio, and local-first admin workspace. Green visual identity, original generated concept images, responsive local image variants, locally hosted Manrope, optional MySQL persistence, and WhatsApp inquiry ordering. There is no online payment system.
 
@@ -22,7 +22,7 @@ On Windows PowerShell with script execution restricted, use `npm.cmd` instead of
 
 Copy `.env.example` to `.env.local`. Set `NEXT_PUBLIC_WHATSAPP_NUMBER` to an international number with country code, and `NEXT_PUBLIC_SITE_URL` to the canonical origin. These are public configuration, never secret credentials. Next.js static builds embed these values, so rebuild after changes.
 
-`src/data/site.ts` owns business contact settings, the WhatsApp message greeting/closing, social links, and `sampleMode`. The supplied business name is **A2 Protective Care**, brand color **green**, product type **medicine**. No verified products, contact number, address, staff, business history, or licenses were supplied. All missing facts are visibly identified. Keep `sampleMode: true` (noindex/disallow) until content is approved; then set it to false and rebuild.
+`src/data/site.ts` owns business contact settings, the WhatsApp message greeting/closing, social links, and `sampleMode`. The supplied business name is **A2 Protective Agro Care**, brand color **green**, product type **medicine**. No verified products, contact number, address, staff, business history, or licenses were supplied. All missing facts are visibly identified. Keep `sampleMode: true` (noindex/disallow) until content is approved; then set it to false and rebuild.
 
 The later brand brief is incorporated: configurable Category One–Four placeholders, Order on WhatsApp CTAs, a global floating WhatsApp control, optional email and subject, hidden empty specifications, neutral team placeholders, and no empty/fake social links. Brand copy is in `src/data/content.ts`; structural/UI labels remain with their components. Product specifications use `{label, value}[]`; optional product fields may be omitted.
 

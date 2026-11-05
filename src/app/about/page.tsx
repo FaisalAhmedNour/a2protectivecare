@@ -7,7 +7,7 @@ import { pageMetadata } from '@/lib/seo';
 import { content } from '@/data/content';
 export const metadata = pageMetadata(
   'About A2',
-  'Get to know A2 Protective Care and explore a simpler way to connect about medicines.',
+  'Get to know A2 Protective Agro Care and explore a simpler way to connect about medicines.',
   '/about/',
 );
 export default function About() {

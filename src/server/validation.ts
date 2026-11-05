@@ -126,7 +126,7 @@ export function validateTeamMember(input: Partial<TeamMember>) {
 export function validateContactInfo(input: Partial<ContactInfo>): ContactInfo {
   const phone = input.phone?.trim() || '+880 1711-000000';
   const whatsappNumber = input.whatsappNumber?.trim() || phone;
-  const email = input.email?.trim() || 'care@a2protectivecare.com';
+  const email = input.email?.trim() || 'care@a2protectiveagrocare.com';
   const address = input.address?.trim() || 'Road 11, Banani, Dhaka-1213, Bangladesh';
   const hours = input.hours?.trim() || 'Saturday – Thursday: 9:00 AM – 8:00 PM';
   const title = input.title?.trim() || 'Let’s talk about what you need.';

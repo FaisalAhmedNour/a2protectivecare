@@ -24,7 +24,7 @@ test('team member validation handles name, designation, photo, bio, order and so
     order: 1,
     social: [
       { label: 'LinkedIn', url: 'https://linkedin.com/in/sarah-rahman' },
-      { label: 'Email', url: 'mailto:sarah@a2protectivecare.com' },
+      { label: 'Email', url: 'mailto:sarah@a2protectiveagrocare.com' },
       { label: '', url: 'https://invalid.com' }, // Should be filtered out
     ],
   });
@@ -50,7 +50,7 @@ test('contact info validation preserves customized fields and applies clean defa
   const custom = validateContactInfo({
     phone: '+880 1711-223344',
     whatsappNumber: '+880 1711-223344',
-    email: 'help@a2protectivecare.com',
+    email: 'help@a2protectiveagrocare.com',
     address: 'Plot 4, Block C, Gulshan-1, Dhaka',
     hours: 'Saturday – Thursday: 10:00 AM – 7:00 PM',
     title: 'Reach out to our specialists.',
@@ -60,7 +60,7 @@ test('contact info validation preserves customized fields and applies clean defa
   });
   assert.equal(custom.phone, '+880 1711-223344');
   assert.equal(custom.whatsappNumber, '+880 1711-223344');
-  assert.equal(custom.email, 'help@a2protectivecare.com');
+  assert.equal(custom.email, 'help@a2protectiveagrocare.com');
   assert.equal(custom.address, 'Plot 4, Block C, Gulshan-1, Dhaka');
   assert.equal(custom.hours, 'Saturday – Thursday: 10:00 AM – 7:00 PM');
   assert.equal(custom.title, 'Reach out to our specialists.');

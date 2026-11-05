@@ -1,5 +1,7 @@
-CREATE DATABASE IF NOT EXISTS a2_protective_care CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE a2_protective_care;
+-- For local MySQL only (Uncomment if needed):
+-- CREATE DATABASE IF NOT EXISTS a2_protective_care CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE a2_protective_care;
+
 
 CREATE TABLE IF NOT EXISTS admin_users (id VARCHAR(36) PRIMARY KEY, email VARCHAR(254) NOT NULL UNIQUE, password_hash CHAR(64) NOT NULL, role VARCHAR(32) NOT NULL DEFAULT 'admin', created_at DATETIME NOT NULL);
 CREATE TABLE IF NOT EXISTS categories (id VARCHAR(80) PRIMARY KEY, name VARCHAR(160) NOT NULL, slug VARCHAR(180) NOT NULL UNIQUE, description TEXT NOT NULL, image VARCHAR(500) NOT NULL, featured BOOLEAN NOT NULL DEFAULT TRUE, sort_order INT NOT NULL DEFAULT 0, created_at DATETIME NOT NULL);

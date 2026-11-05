@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <script dangerouslySetInnerHTML={{ __html: `(()=>{try{const m=localStorage.getItem('a2-theme')||'system';document.documentElement.dataset.theme=m}catch{}})()` }} />
+        <script dangerouslySetInnerHTML={{ __html: `(()=>{try{const m=localStorage.getItem('a2-theme')||'light';document.documentElement.dataset.theme=m}catch{}})()` }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

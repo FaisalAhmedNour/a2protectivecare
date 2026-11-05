@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const metadata = pageMetadata(
   'Categories',
-  'Explore sample medicine and care collections at A2 Protective Care.',
+  'Explore sample medicine and care collections at A2 Protective Agro Care.',
   '/categories/',
 );
 

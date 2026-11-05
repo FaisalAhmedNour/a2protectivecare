@@ -1,10 +1,10 @@
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '[WHATSAPP NUMBER]';
 export const site = {
-  name: 'A2 Protective Care',
+  name: 'A2 Protective Agro Care',
   shortName: 'A2',
   description:
-    'Explore the A2 Protective Care medicine catalog and prepare an availability inquiry on WhatsApp.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://a2-protective-care.well-oak-7339.chatgpt.site',
+    'Explore the A2 Protective Agro Care medicine catalog and prepare an availability inquiry on WhatsApp.',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://a2-protective-agro-care.well-oak-7339.chatgpt.site',
   whatsappNumber: WHATSAPP_NUMBER,
   contactEndpoint: process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || '/api/contact',
   sampleMode: true,
@@ -16,7 +16,7 @@ export const site = {
   footerDescription:
     'Explore. Inquire. Stay connected. Your A2 medicine catalog, all in one place.',
   contactGreeting:
-    'Hello, I am interested in ordering from A2 Protective Care. Please help me with product availability.',
+    'Hello, I am interested in ordering from A2 Protective Agro Care. Please help me with product availability.',
   orderGreeting: 'Hello, I would like to place an order:',
   orderClosing: 'Please confirm availability and total price.\n\nThank you.',
   singleOrderGreeting: 'Hello, I am interested in ordering:',

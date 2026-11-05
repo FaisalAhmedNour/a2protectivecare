@@ -12,7 +12,7 @@ import { getPublicCategories, getPublicProducts, getPublicTeam } from '@/server/
 export const dynamic = 'force-dynamic';
 export const metadata = pageMetadata(
   'Care, thoughtfully connected',
-  'Explore the A2 Protective Care sample medicine catalog. Browse collections and prepare your WhatsApp inquiry.',
+  'Explore the A2 Protective Agro Care sample medicine catalog. Browse collections and prepare your WhatsApp inquiry.',
   '/',
 );
 export default async function Home() {

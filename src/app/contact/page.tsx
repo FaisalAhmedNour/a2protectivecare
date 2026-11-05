@@ -11,7 +11,7 @@ export const revalidate = 0;
 
 export const metadata = pageMetadata(
   'Contact',
-  'Get in touch with A2 Protective Care about products, availability, and business inquiries.',
+  'Get in touch with A2 Protective Agro Care about products, availability, and business inquiries.',
   '/contact/',
 );
 

@@ -10,7 +10,7 @@ import { WhatsAppAction } from '../whatsapp-action';
 import { Dialog } from '../ui/dialog';
 export function Logo() {
   return (
-    <Link href="/" className="brand" aria-label="A2 Protective Care home">
+    <Link href="/" className="brand" aria-label="A2 Protective Agro Care home">
       <span className="brand-mark">
         a<span>2</span>
         <i />
@@ -18,7 +18,7 @@ export function Logo() {
       <span className="brand-name">
         PROTECTIVE
         <br />
-        CARE
+        AGRO CARE
       </span>
     </Link>
   );

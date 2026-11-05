@@ -5,7 +5,7 @@ import { getPublicGallery } from '@/server/repository';
 export const dynamic = 'force-dynamic';
 export const metadata = pageMetadata(
   'Gallery',
-  'Explore the visual concept for A2 Protective Care. Actual business and product photographs are coming soon.',
+  'Explore the visual concept for A2 Protective Agro Care. Actual business and product photographs are coming soon.',
   '/gallery/',
 );
 export default async function Gallery() {

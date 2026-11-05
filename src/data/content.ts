@@ -1,6 +1,6 @@
 // Brand copy lives here so approved content can replace placeholders without UI changes.
 export const content = {
-  announcement: 'A2 Protective Care — a new chapter in care.',
+  announcement: 'A2 Protective Agro Care — a new chapter in care.',
   hero: {
     headline: 'Everyday care.',
     accent: 'Closer to you.',
@@ -11,17 +11,17 @@ export const content = {
     visualDescription: 'Easy inquiries through WhatsApp',
   },
   story: {
-    eyebrow: 'MEET A2 PROTECTIVE CARE',
+    eyebrow: 'MEET A2 PROTECTIVE AGRO CARE',
     title: 'Care starts with a conversation.',
     introduction:
-      'A place to explore medicines, put your questions together, and connect with A2 Protective Care.',
+      'A place to explore medicines, put your questions together, and connect with A2 Protective Agro Care.',
     description:
       'Our full company story is coming soon. In the meantime, take a look around the sample catalog and get to know the experience.',
   },
   about: {
     title: 'A closer connection to care.',
     introduction:
-      'Introducing A2 Protective Care — a Bangladeshi medicine brand with a place to browse, ask, and connect.',
+      'Introducing A2 Protective Agro Care — a Bangladeshi medicine brand with a place to browse, ask, and connect.',
     storyTitle: 'Every story starts with people.',
     story: '[COMPANY DESCRIPTION] — Our approved company background and story will be shared here.',
     mission: '[MISSION STATEMENT] — The company’s approved purpose will be shared here.',

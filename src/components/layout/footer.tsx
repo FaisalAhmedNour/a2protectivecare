@@ -78,7 +78,7 @@ export async function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        <span>© {new Date().getFullYear()} A2 Protective Care.</span>
+        <span>© {new Date().getFullYear()} A2 Protective Agro Care.</span>
         <div>
           <Link href="/privacy/">Privacy policy</Link>
           <Link href="/terms/">Terms of use</Link>

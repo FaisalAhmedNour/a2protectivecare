@@ -1,5 +1,5 @@
 {
-  "name": "a2-protective-care",
+  "name": "a2-protective-agro-care",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -11,13 +11,15 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
-    "images": "node scripts/optimize-images.mjs"
+    "images": "node scripts/optimize-images.mjs",
+    "package:standalone": "node scripts/package-standalone.mjs",
+    "build:deploy": "next build && node scripts/package-standalone.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
     "lucide-react": "^0.577.0",
     "mysql2": "^3.14.0",
-    "next": "^16.2.0",
+    "next": "16.3.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

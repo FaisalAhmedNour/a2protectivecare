@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 export const metadata = pageMetadata(
   'Our team',
-  'Meet the people behind A2 Protective Care. Verified team profiles and leadership.',
+  'Meet the people behind A2 Protective Agro Care. Verified team profiles and leadership.',
   '/team/',
 );
 
@@ -21,7 +21,7 @@ export default async function Team() {
       <PageHeading
         title="The people behind the care."
         eyebrow="Our team"
-        description="A space for the faces, experience, and stories of the people behind A2 Protective Care."
+        description="A space for the faces, experience, and stories of the people behind A2 Protective Agro Care."
       />
       <section className="container page-content">
         <TeamGrid members={teamMembers} headingLevel={2} />
