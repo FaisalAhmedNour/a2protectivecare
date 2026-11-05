@@ -26,9 +26,9 @@ export default async function Categories() {
         description="Start with a collection. Find a product. Put your questions together."
       />
       <section className="container page-content">
-        <p className="placeholder-note">
+        {/* <p className="placeholder-note">
           Explore our collections. All categories and products are managed directly from the care portal.
-        </p>
+        </p> */}
         {categoryData.length > 0 ? (
           <div className="category-grid category-directory">
             {categoryData.map((c, i) => (

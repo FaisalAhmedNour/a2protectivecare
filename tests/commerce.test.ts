@@ -23,20 +23,20 @@ test('WhatsApp single inquiry encodes Unicode and punctuation and contains produ
   const message = parsed.searchParams.get('text')!;
   assert.match(message, /Care & A\+B \/ বাংলা/);
   assert.match(message, /Quantity: 2/);
-  assert.match(message, /SAMPLE-001/);
+  assert.match(message, /A2-PGR-001/);
   assert.match(message, /100/);
-  assert.match(message, /https:\/\/example.com\/products\/tablet-format\//);
+  assert.match(message, /https:\/\/example.com\/products\/profarty-grow\//);
 });
 test('multiple products keep individual quantities and include configured prices', () => {
   const message = buildOrderMessage([
     { product: products[0], quantity: 2 },
     { product: products[1], quantity: 1 },
   ]);
-  assert.match(message, /1\. Tablet format/);
-  assert.match(message, /2\. Oral liquid format/);
+  assert.match(message, /1\. প্রোফার্টি গ্রো/);
+  assert.match(message, /2\. প্রো হিউম্যাক্স/);
   assert.match(message, /Quantity: 2/);
   assert.match(message, /Quantity: 1/);
-  assert.match(message, /Unit price: ৳280/);
+  assert.match(message, /Unit price: ৳480/);
 });
 test('no URL is generated for missing or invalid number', () => {
   for (const number of ['', '[WHATSAPP NUMBER]', 'javascript:1', '123', '0000000000'])

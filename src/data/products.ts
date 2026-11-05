@@ -1,47 +1,289 @@
 import type { Product } from '@/types/catalog';
-// DEVELOPMENT DEMO DATA ONLY. These formats are not actual A2 products.
-// Prices below are development-only sample BDT values so the catalog and Order List can be exercised.
-const samples = [
-  ['tablet-format', 'Tablet format', 'category-one', 'medicine'],
-  ['oral-liquid-format', 'Oral liquid format', 'category-one', 'wellness'],
-  ['capsule-format', 'Capsule format', 'category-two', 'medicine'],
-  ['dressing-format', 'Dressing format', 'category-three', 'first-aid'],
-  ['care-bottle-format', 'Care bottle format', 'category-four', 'wellness'],
-  ['boxed-care-format', 'Boxed care format', 'category-four', 'essentials'],
-  ['first-aid-pack', 'First-aid pack', 'category-three', 'essentials'],
-  ['wellness-pack', 'Wellness pack', 'category-two', 'first-aid'],
-  ['medicine-pack', 'Medicine pack', 'category-one', 'essentials'],
+
+export const products: Product[] = [
+  {
+    id: 'profarty-grow',
+    slug: 'profarty-grow',
+    name: 'প্রোফার্টি গ্রো (Profarty Grow)',
+    sku: 'A2-PGR-001',
+    categoryId: 'growth-regulators',
+    shortDescription:
+      'গ্রীষ্মকালীন টমেটো ও শাকসবজির ফুল ও ফলের দ্রুত বৃদ্ধি এবং পরাগায়নে সহায়ক উচ্চমানের জৈব উদ্দীপক ও হরমোন।',
+    description:
+      'প্রোফার্টি গ্রো একটি আদর্শ জৈব উদ্দীপক যাতে ৪-ক্লোরোফেনক্সি এসিটিক এসিড (৪-সিপিএ) দ্রবীভূত অবস্থায় বিদ্যমান। এটি মাটি থেকে খাদ্য উপাদান সরবরাহে গাছকে কার্যকর সহায়তা করে, প্রাকৃতিক হরমোন ও এনজাইমের কর্মক্ষমতা বৃদ্ধি করে এবং সালোকসংশ্লেষণ ও আমিষ সংশ্লেষণ প্রক্রিয়া ত্বরান্বিত করে। বিশেষ করে গ্রীষ্মকালীন টমেটো ও অন্যান্য সবজির ফুল ও ফল ঝরে পড়া রোধ করে অধিক ফলন নিশ্চিত করে।',
+    price: 480,
+    featured: true,
+    newArrival: false,
+    inStock: true,
+    images: [
+      '/images/products/profarty-grow-front.webp',
+      '/images/products/profarty-grow-label.webp',
+    ],
+    features: [
+      'গাছের প্রাকৃতিক হরমোন ও এনজাইমের কর্মক্ষমতা বৃদ্ধি করে',
+      'ফুল ও ফলের দ্রুত বৃদ্ধি ঘটায় এবং অসময়ে ঝরে পড়া রোধ করে',
+      'পরাগায়ন ত্বরান্বিত করে ও ফলের গুণগত আকার বৃদ্ধি করে',
+      'শিকড়ের সংখ্যা বৃদ্ধি ও মাটির গভীরে বিস্তার নিশ্চিত করে',
+      'গ্রীষ্মকালীন টমেটো চাষে আশাতীত ফলন প্রদান করে',
+    ],
+    specifications: [
+      { label: 'উপাদান ও সক্রিয় শক্তি', value: '৪-ক্লোরোফেনক্সি এসিটিক এসিড ১২৫০ পিপিএম (4-CPA)' },
+      { label: 'প্যাক সাইজ', value: '৫০০ মিলি' },
+      { label: 'অনুমোদিত ফসল', value: 'গ্রীষ্মকালীন টমেটো ও সকল প্রকার শাকসবজি' },
+      { label: 'প্রয়োগমাত্রা', value: '১.০ - ১.৫ মিলি প্রতি লিটার পানিতে স্প্রে' },
+      { label: 'প্রস্তুতকারক', value: 'জিয়েম্যান টুং সিং ক্যামিক্যাল কো. লি., চায়না' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'pro-humax',
+    slug: 'pro-humax',
+    name: 'প্রো হিউম্যাক্স (Pro Humax)',
+    sku: 'A2-SOIL-001',
+    categoryId: 'soil-conditioners',
+    shortDescription:
+      'মাটির স্বাস্থ্য ও উর্বরতা বৃদ্ধিকারী, শক্তিশালী শিকড় বিস্তারকারী ৭২% হিউমিক এসিড সমৃদ্ধ জৈব কন্ডিশনার।',
+    description:
+      'প্রো হিউম্যাক্স উদ্ভিদের মেটাবলিজম প্রক্রিয়ায় সরাসরি অংশ নেয়, কোষকলার দ্রুত বিভাজন ঘটিয়ে গাছের ডালপালা ও মূল শিকড় বৃদ্ধিতে গুরুত্বপূর্ণ ভূমিকা পালন করে। এটি মাটির ক্যাটায়ন এক্সচেঞ্জ ক্যাপাসিটি (CEC) বৃদ্ধি করে, মাটির প্রাণ বা জৈব পদার্থের (Organic Matter) পরিমাণ বাড়ায় এবং ক্ষয় রোধ করে। বেলে মাটিতে পানি ও পুষ্টির অপচয় রোধ করে রাসায়নিক ও জৈব সারের কার্যকারিতা বহুগুণ বাড়িয়ে দেয়।',
+    price: 650,
+    featured: true,
+    newArrival: true,
+    inStock: true,
+    images: [
+      '/images/products/pro-humax-front.webp',
+      '/images/products/pro-humax-label.webp',
+    ],
+    features: [
+      'শক্তিশালী মূল ও শিকড় ব্যবস্থা তৈরি করে দ্রুত পুষ্টি গ্রহণ নিশ্চিত করে',
+      'মাটির কন্ডিশনার হিসেবে কাজ করে মাটিকে নরম ও ঝুরঝুরে রাখে',
+      'সালোকসংশ্লেষণ ত্বরান্বিত করে ফসলের গঠন ও গড় ওজন বৃদ্ধি করে',
+      'NPK ও অন্যান্য রাসায়নিক সারের সাথে মিশিয়ে সহজে প্রয়োগযোগ্য',
+      'হালকা বেলেমাটিতে পানি ও পুষ্টির অপচয় প্রতিরোধ করে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'হিউমিক এসিড ৭২% (Humic Acid 72%)' },
+      { label: 'প্যাক সাইজ', value: '১ কেজি' },
+      { label: 'প্রয়োগমাত্রা', value: 'প্রতি বিঘাতে (৩৩ শতাংশে) ৫০০ গ্রাম' },
+      { label: 'প্রয়োগের পদ্ধতি', value: 'মাটিতে প্রয়োগ, বীজ শোধন, চারা চুবানো বা পাতায় স্প্রে' },
+      { label: 'প্রস্তুতকারক', value: 'জিয়েম্যান টুংসিং কেমিক্যাল কোং লিঃ, চায়না' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'progia-gold',
+    slug: 'progia-gold',
+    name: 'প্রোজিয়া গোল্ড (Progia Gold)',
+    sku: 'A2-PGR-002',
+    categoryId: 'growth-regulators',
+    shortDescription:
+      'ফসলের দ্রুত বৃদ্ধি, ফুল-ফল ঝরা রোধ এবং ১৫-২৫% ফলন বৃদ্ধিতে সহায়ক বিশুদ্ধ জিব্রেলিক এসিড (GA3)।',
+    description:
+      'প্রোজিয়া গোল্ড এর মূল সক্রিয় উপাদান জিব্রেলিক এসিড (GA3 ১০%)। এটি উদ্ভিদের কোষ দীর্ঘায়ন ও দ্রুত বৃদ্ধিতে সহায়তা করে সুষম দৈহিক বৃদ্ধি ঘটায়। ফসলে ফুল ও ফলের অকাল ঝরা রোধ করে, ফল ও ফলের আকার সমরূপ করে এবং গুণগত মান বৃদ্ধি করে। ফসলের স্বাভাবিক রোগ প্রতিরোধ ক্ষমতা জোরদার করে সামগ্রিক ফলন ১৫-২৫% পর্যন্ত বাড়িয়ে তোলে।',
+    price: 120,
+    featured: true,
+    newArrival: false,
+    inStock: true,
+    images: [
+      '/images/products/progia-gold-front.webp',
+      '/images/products/progia-gold-label.webp',
+    ],
+    features: [
+      'ফসলের উৎপাদন শতকরা ১৫ থেকে ২৫ ভাগ নিশ্চিত বৃদ্ধি করে',
+      'কচি ফুল ও ফল অকালে ঝরে যাওয়া কার্যকরভাবে রোধ করে',
+      'গাছ দ্রুত ও সমভাবে বৃদ্ধি পায় এবং রোগ প্রতিরোধ ক্ষমতা বাড়ে',
+      'ফল, শাকসবজি ও শস্যদানার আকার ও ওজন বৃদ্ধি করে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'জিব্রেলিক এসিড ১০% জিএ-৩ (Gibberellic Acid 10% GA3)' },
+      { label: 'প্যাক সাইজ', value: '১০ গ্রাম' },
+      { label: 'অনুমোদিত ফসল', value: 'ধান, ভুট্টা, আলু, টমেটো, মরিচ, বেগুন, পেঁয়াজ, রসুন ও ফলমূল' },
+      { label: 'প্রয়োগমাত্রা', value: 'প্রতি ৩৬ লিটার পানিতে ১০ গ্রাম মিশিয়ে স্প্রে' },
+      { label: 'প্রস্তুতকারক', value: 'জিয়েম্যান টুং সিং ক্যামিক্যাল কো. লি., চায়না' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'pro-solumax',
+    slug: 'pro-solumax',
+    name: 'প্রো সলোম্যাক্স (Pro Solumax)',
+    sku: 'A2-MICRO-001',
+    categoryId: 'micronutrients',
+    shortDescription:
+      'ধানের চিটা রোধ, ফল ফাটা ও ঝরা বন্ধ এবং আলুর দাঁদ রোগ প্রতিরোধে শতভাগ পানিতে দ্রবণীয় সলুবোর বোরন ২০%।',
+    description:
+      'প্রো সলোম্যাক্স উচ্চ ঘনমাত্রার পানিতে সম্পূর্ণ দ্রবণীয় বোরণ সার (২০%)। এটি ধানের পরাগায়নে সাহায্য করে চিটাবিহীন পরিপুষ্ট দানা গঠন করে। ফল ও সবজির ফেটে যাওয়া, বিকৃতি ও অকাল ঝরা বন্ধ করে। আলুর দাঁদ রোগ (Scab) প্রতিরোধ করে আলুর ত্বক মসৃণ ও উজ্জ্বল রাখে। তৈলজাতীয় ফসলে দানার আকার ও তেলের ভাগ বহুগুণ বৃদ্ধি করে।',
+    price: 390,
+    featured: true,
+    newArrival: false,
+    inStock: true,
+    images: [
+      '/images/products/pro-solumax-front.webp',
+      '/images/products/pro-solumax-label.webp',
+    ],
+    features: [
+      'ধানের শীর্ষে চিটাবিহীন পুষ্ট দানা গঠনে ও ফলন বৃদ্ধিতে সহায়তা করে',
+      'ফল ফাটা ও চামড়ায় বিবর্ণ দাগ পড়া রোধ করে মিষ্টিতা বাড়ায়',
+      'আলুর দাঁদ রোগ প্রতিরোধ করে গুণগত বাণিজ্যিক মান নিশ্চিত করে',
+      'শ্বেতসার ও শর্করা পরিবহনে এবং নতুন কোষ কলা গঠনে ভূমিকা রাখে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'সলুবোর বোরন - বোরন ২০% (Solubor Boron 20%)' },
+      { label: 'প্যাক সাইজ', value: '৫০০ গ্রাম' },
+      { label: 'প্রয়োগমাত্রা (মাটিতে)', value: '৩৫০ - ৫০০ গ্রাম প্রতি বিঘা' },
+      { label: 'প্রয়োগমাত্রা (স্প্রে)', value: '১০ - ১৫ গ্রাম প্রতি ১০ লিটার পানিতে' },
+      { label: 'প্রস্তুতকারক', value: 'এস এ এম টেকনোলজি লিমিটেড, আর্জেন্টিনা' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'pro-borimax',
+    slug: 'pro-borimax',
+    name: 'প্রো বরিম্যাক্স (Pro Borimax)',
+    sku: 'A2-MICRO-002',
+    categoryId: 'micronutrients',
+    shortDescription:
+      'ক্লোরোফিল উৎপাদন, কোষপ্রাচীর গঠন এবং বোরন ঘাটতিজনিত ফলন হ্রাস রোধে বিশুদ্ধ বোরিক এসিড ১৭%।',
+    description:
+      'মাটিতে বোরণের অভাবে ফসলের ফলন ২৫% থেকে ৭৫% পর্যন্ত কমে যেতে পারে। প্রো বরিম্যাক্স গাছের পাতায় ও কাণ্ডে ক্লোরোফিল তৈরিতে সহায়তা করে পাতা হলুদ হওয়া রোধ করে। বোরণ কোষপ্রাচীর সুদৃঢ় করে ফলের ফেটে যাওয়া রোধ করে এবং দানাদার শস্য পরিপুষ্ট করে। জমিতে নাইট্রোজেন সক্রিয় করে সামগ্রিক মাটির উৎপাদনশীলতা বাড়ায়।',
+    price: 320,
+    featured: false,
+    newArrival: false,
+    inStock: true,
+    images: [
+      '/images/products/pro-borimax-front.webp',
+      '/images/products/pro-borimax-label.webp',
+    ],
+    features: [
+      'বোরনের অভাবজনিত ফলন বিপর্যয় কার্যকরভাবে রোধ করে',
+      'ফলের ত্বক ফেটে যাওয়া ও বিবর্ণ দাগ পড়া প্রতিরোধ করে',
+      'উদ্ভিদের পরাগরেণু সক্রিয় করে ফুল ও ফল ঝরা বন্ধ করে',
+      'টিএসপি বা অন্যান্য সারের সাথে একত্রে জমিতে প্রয়োগযোগ্য',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'বোরিক এসিড - বোরণ ১৭% (Boric Acid 17%)' },
+      { label: 'প্যাক সাইজ', value: '৫০০ গ্রাম' },
+      { label: 'প্রয়োগমাত্রা', value: 'একর প্রতি ৩ - ৫ কেজি হারে অন্যান্য সারের সাথে মিশিয়ে' },
+      { label: 'প্রস্তুতকারক', value: 'এস এ এম টেকনোলজি লিমিটেড, আর্জেন্টিনা' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'progimon-zypsum',
+    slug: 'progimon-zypsum',
+    name: 'প্রোজিমোন জিপসাম (Progimon Zypsum)',
+    sku: 'A2-NUTRI-001',
+    categoryId: 'mineral-nutrients',
+    shortDescription:
+      'ক্যালসিয়াম ও সালফারের ঘাটতি পূরণ, কুশির সংখ্যা বৃদ্ধি এবং তৈলবীজের তেল বৃদ্ধিকারী খাঁটি জিপসাম।',
+    description:
+      'মাটিতে ক্যালসিয়াম ও সালফারের ঘাটতিতে ফসলে ২৫% পর্যন্ত ফলন বিপর্যয় ঘটে। প্রোজিমোন জিপসামে রয়েছে উচ্চমাত্রার ক্যালসিয়াম (২০%) এবং সালফার (১৬%)। এটি ফসলের কচি পাতার কিনারা হলুদ হওয়া ও কুঁকড়ে যাওয়া রোধ করে। উদ্ভিদের নতুন কুশির সংখ্যা বৃদ্ধি করে এবং তৈলবীজ জাতীয় ফসলে (যেমন সরিষা, সূর্যমুখী, বাদাম) তেলের পরিমাণ লক্ষণীয়ভাবে বৃদ্ধি করে।',
+    price: 350,
+    featured: false,
+    newArrival: true,
+    inStock: true,
+    images: [
+      '/images/products/progimon-zypsum-front.webp',
+      '/images/products/progimon-zypsum-label.webp',
+    ],
+    features: [
+      'নাইট্রোজেন শোষণে সহায়তা করে গাছকে গাঢ় সবুজ ও প্রাণবন্ত রাখে',
+      'গাছের ডালপালা ও কার্যকর কুশির সংখ্যা বৃদ্ধি করে',
+      'তৈলজাতীয় ফসলে তেলের পরিমাণ ও দানার প্রোটিন বাড়ায়',
+      'মাটির ক্ষারীয় ভারসাম্য রক্ষা করে ও শিকড় বৃদ্ধি করে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'জিপসাম - ক্যালসিয়াম ২০% ও সালফার ১৬%' },
+      { label: 'প্যাক সাইজ', value: '৫ কেজি' },
+      { label: 'প্রয়োগমাত্রা', value: 'একর প্রতি ১৬ - ২০ কেজি জমি তৈরির শেষ চাষে' },
+      { label: 'প্রস্তুতকারক', value: 'ইজিপশিয়ান সাইনিং কোয়ালিটি, মিশর' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'promag-gold',
+    slug: 'promag-gold',
+    name: 'প্রোম্যাগ গোল্ড (Promag Gold)',
+    sku: 'A2-MICRO-003',
+    categoryId: 'micronutrients',
+    shortDescription:
+      'গাছের খর্বাকৃতি রোধ, কচি পাতার সাদা দাগ দূরীকরণ ও ধানের পুষ্ট দানার জন্য ৩৬% মনোহাইড্রেট জিংক সালফেট।',
+    description:
+      'প্রোম্যাগ গোল্ড উচ্চমাত্রার জিংক (৩৬%) ও সালফার (১৭.৫%) সমৃদ্ধ দ্রুত দ্রবণীয় মনোহাইড্রেট জিংক সালফেট। জমিতে জিংকের ঘাটতি থাকলে গাছের বৃদ্ধি থেমে যায়, কচি পাতার গোড়া ও মধ্যশিরা সাদা হয়ে যায় এবং পুরনো পাতায় মরিচা পড়ার মতো দাগ দেখা দেয় (খায়রা রোগ)। প্রোম্যাগ গোল্ড দ্রুত গাছ কর্তৃক শোষিত হয়ে এই রোগ প্রতিরোধ করে এবং ফসলের সালোকসংশ্লেষণ ও খাদ্য উৎপাদন ত্বরান্বিত করে।',
+    price: 280,
+    featured: false,
+    newArrival: false,
+    inStock: true,
+    images: [
+      '/images/products/promag-gold-front.webp',
+      '/images/products/promag-gold-label.webp',
+    ],
+    features: [
+      'জিংক ঘাটতিজনিত খায়রা রোগ ও পাতার বিবর্ণতা প্রতিরোধ করে',
+      'উদ্ভিদের বৃদ্ধি সংক্রান্ত হরমোন তৈরিতে প্রত্যক্ষ সহায়তা করে',
+      'দানাজাতীয় শস্যকে পূর্ণাঙ্গ পুষ্ট করে এবং ধানের চিটা কমায়',
+      'মাটি থেকে অধিক পুষ্টি উপাদান গ্রহণে গাছকে সক্ষম করে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'জিংক সালফেট মনোহাইড্রেট - জিংক ৩৬% ও সালফার ১৭.৫%' },
+      { label: 'প্যাক সাইজ', value: '৫০০ গ্রাম' },
+      { label: 'প্রয়োগমাত্রা', value: 'একর প্রতি ১.৫ - ৩ কেজি জমি তৈরির শেষ চাষে' },
+      { label: 'সতর্কতা', value: 'টিএসপি বা ডিএপি সারের সাথে মিশিয়ে প্রয়োগ করবেন না' },
+      { label: 'প্রস্তুতকারক', value: 'বোহাই জিংক নিউট্রিয়েন্ট কো.' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
+  {
+    id: 'pro-sulpomax',
+    slug: 'pro-sulpomax',
+    name: 'প্রো সালপোম্যাক্স (Pro Sulpomax)',
+    sku: 'A2-NUTRI-002',
+    categoryId: 'mineral-nutrients',
+    shortDescription:
+      'সাধারণ এমওপির চেয়ে দ্রুত কার্যকরী ক্লোরাইডমুক্ত পটাশিয়াম ৫০% ও সালফার ১৭% সমৃদ্ধ সালফেট অব পটাশ (SOP)।',
+    description:
+      'প্রো সালপোম্যাক্স সর্বোচ্চ মানের সালফেট অব পটাশ (SOP), যাতে ৫০% পটাশিয়াম এবং ১৭% সালফার রয়েছে। এটি সাধারণ মিউরেট অব পটাশ (MOP) এর চেয়ে অনেক দ্রুত উদ্ভিদে কার্যকর হয় এবং এতে কোনো ক্ষতিকারক ক্লোরাইড থাকে না। এটি গাছের কান্ড শক্ত করে ফসল নেতিয়ে বা ঢলে পড়া রোধ করে, ফলের মিষ্টিতা, রং ও ঔজ্জ্বল্য বৃদ্ধি করে এবং দীর্ঘ সংরক্ষণ ক্ষমতা প্রদান করে।',
+    price: 390,
+    featured: true,
+    newArrival: true,
+    inStock: true,
+    images: [
+      '/images/products/pro-sulpomax-front.webp',
+      '/images/products/pro-sulpomax-label.webp',
+    ],
+    features: [
+      'ক্লোরাইডমুক্ত হওয়ায় সবজি ও ফলের জন্য শতভাগ নিরাপদ',
+      'দানা ফসলের ওজন ও ফলের আকার দ্রুত বৃদ্ধি করে',
+      'কান্ড শক্ত করে ধানের হেলে পড়া বা নেতিয়ে পড়া রোধ করে',
+      'ফলের মিষ্টতা, রং, ঔজ্জ্বল্য ও বাজার মূল্য বৃদ্ধি করে',
+    ],
+    specifications: [
+      { label: 'সক্রিয় উপাদান', value: 'সালফেট অব পটাশ (পটাশিয়াম ৫০% ও সালফার ১৭%)' },
+      { label: 'প্যাক সাইজ', value: '১ কেজি' },
+      { label: 'প্রয়োগমাত্রা (দানা শস্য)', value: 'বিঘা প্রতি ২ কেজি' },
+      { label: 'প্রয়োগমাত্রা (শাকসবজি)', value: 'বিঘা প্রতি ৪ কেজি' },
+      { label: 'প্রয়োগমাত্রা (ফল গাছ)', value: 'গাছ প্রতি ২০০ - ৩০০ গ্রাম' },
+      { label: 'প্রস্তুতকারক', value: 'ইজিপশিয়ান সাইনিং কোয়ালিটি, মিশর' },
+      { label: 'আমদানিকারক', value: 'বায়োটিক এগ্রোভেট, ঢাকা' },
+      { label: 'বাজারজাতকারী', value: 'এ ২ প্রটেক্টিভ এগ্রো কেয়ার' },
+    ],
+    sample: false,
+  },
 ];
-export const products: Product[] = samples.map(([slug, name, categoryId, image], i) => ({
-  id: slug,
-  slug,
-  name,
-  categoryId,
-  sku: `SAMPLE-${String(i + 1).padStart(3, '0')}`,
-  shortDescription:
-    'Sample catalog entry. Actual product, price, and availability are awaiting confirmation.',
-  description:
-    'This entry demonstrates the catalog experience. It is not a verified medicine or an offer for sale. The confirmed product name, manufacturer, approved information, and any prescription requirements will appear here before launch.',
-  featured: i < 4,
-  newArrival: false,
-  price: [280, 360, 420, 190, 520, 680, 450, 390, 740][i],
-  images: [`/images/${image}.webp`, '/images/hero.webp'],
-  features: [
-    'Product information awaiting verification',
-    'Availability confirmed with your inquiry',
-    'No payment is taken on this website',
-  ],
-  specifications:
-    i === 0
-      ? [
-          { label: 'Product name', value: '[VERIFIED PRODUCT NAME]' },
-          { label: 'Manufacturer', value: '[MANUFACTURER]' },
-          { label: 'Pack size', value: '[PACK SIZE]' },
-          { label: 'Prescription status', value: '[TO BE VERIFIED]' },
-        ]
-      : undefined,
-  sample: true,
-}));
+
 export function getProduct(slug: string) {
   return products.find((p) => p.slug === slug);
 }

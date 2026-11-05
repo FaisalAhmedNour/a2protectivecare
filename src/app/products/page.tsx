@@ -19,10 +19,9 @@ export default async function Products() {
         description="Browse the collection, take a closer look, and keep the items you want to ask about together."
       />
       <section className="container page-content">
-        <p className="placeholder-note">
-          Sample catalog — these entries are illustrative, not verified medicines or offers for
-          sale. Real product information is awaiting confirmation.
-        </p>
+        {/* <p className="placeholder-note">
+          Explore our complete range of certified agricultural care products, bio-stimulants, and micronutrient fertilizers.
+        </p> */}
         <CatalogBrowser productData={productData} categoryData={categoryData} />
       </section>
     </>

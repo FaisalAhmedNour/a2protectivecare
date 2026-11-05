@@ -1,39 +1,44 @@
 import type { Category } from '@/types/catalog';
-// DEVELOPMENT PLACEHOLDERS: actual A2 category names have not been supplied.
-// Replace these records and their concept images when the business range is approved.
+
 export const categories: Category[] = [
   {
-    id: 'category-one',
-    slug: 'category-one',
-    name: 'Category One',
-    description: '[CATEGORY DESCRIPTION] — Temporary collection for the sample catalog.',
-    image: '/images/medicine.webp',
-    featured: true,
-  },
-  {
-    id: 'category-two',
-    slug: 'category-two',
-    name: 'Category Two',
-    description: '[CATEGORY DESCRIPTION] — This placeholder is ready for an approved collection.',
-    image: '/images/wellness.webp',
-    featured: true,
-  },
-  {
-    id: 'category-three',
-    slug: 'category-three',
-    name: 'Category Three',
+    id: 'growth-regulators',
+    slug: 'growth-regulators',
+    name: 'Plant Growth Regulators (উদ্ভিদ বৃদ্ধি নিয়ন্ত্রক ও হরমোন)',
     description:
-      '[CATEGORY DESCRIPTION] — The real collection name and details will be added here.',
-    image: '/images/first-aid.webp',
+      'উচ্চমানের জৈব উদ্দীপক ও বৃদ্ধি সহায়ক হরমোন যা ফসলের সুষম বৃদ্ধি, ফুল-ফল ধারণ ও অধিক ফলন নিশ্চিত করে।',
+    image: '/images/products/profarty-grow-front.webp',
     featured: true,
+    order: 1,
   },
   {
-    id: 'category-four',
-    slug: 'category-four',
-    name: 'Category Four',
+    id: 'soil-conditioners',
+    slug: 'soil-conditioners',
+    name: 'Soil Conditioners (মাটির কন্ডিশনার ও জৈব উদ্দীপক)',
     description:
-      '[CATEGORY DESCRIPTION] — Explore sample entries while the range is being prepared.',
-    image: '/images/essentials.webp',
+      'মাটির গঠন, উর্বরতা ও জৈব উপাদান বৃদ্ধিকারী আধুনিক কন্ডিশনার ও হিউমিক উপাদান।',
+    image: '/images/products/pro-humax-front.webp',
     featured: true,
+    order: 2,
+  },
+  {
+    id: 'micronutrients',
+    slug: 'micronutrients',
+    name: 'Micronutrient Fertilizers (অণুখাদ্য সার)',
+    description:
+      'বোরন ও জিংকের ঘাটতি পূরণকারী উচ্চ ক্ষমতাসম্পন্ন পানিতে দ্রবণীয় অণুখাদ্য সার।',
+    image: '/images/products/pro-solumax-front.webp',
+    featured: true,
+    order: 3,
+  },
+  {
+    id: 'mineral-nutrients',
+    slug: 'mineral-nutrients',
+    name: 'Secondary & Mineral Fertilizers (খনিজ ও গৌণ পুষ্টি সার)',
+    description:
+      'ক্যালসিয়াম, সালফার ও পটাশিয়ামের পুষ্টি সরবরাহকারী বিশেষায়িত সার।',
+    image: '/images/products/pro-sulpomax-front.webp',
+    featured: true,
+    order: 4,
   },
 ];

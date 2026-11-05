@@ -61,8 +61,10 @@ async function main() {
   await copyDir(PUBLIC_SRC, PUBLIC_DEST);
 
   // 4. Copy database schema and configuration templates
-  console.log('🗄️  3/5: Copying database schema, environment template & image loader...');
+  console.log('🗄️  3/5: Copying database schema, seed data, environment template & image loader...');
   await copyFile(path.join(ROOT_DIR, 'database', 'schema.sql'), path.join(STANDALONE_DIR, 'database', 'schema.sql'));
+  await copyFile(path.join(ROOT_DIR, 'database', 'seed-products.sql'), path.join(STANDALONE_DIR, 'database', 'seed-products.sql'));
+  await copyFile(path.join(ROOT_DIR, 'database', 'products-export.json'), path.join(STANDALONE_DIR, 'database', 'products-export.json'));
   await copyFile(path.join(ROOT_DIR, '.env.example'), path.join(STANDALONE_DIR, '.env.example'));
   await copyFile(path.join(ROOT_DIR, 'src', 'lib', 'image-loader.ts'), path.join(STANDALONE_DIR, 'src', 'lib', 'image-loader.ts'));
 
@@ -150,19 +152,25 @@ QUICK ACTIVATION INSTRUCTIONS:
 `;
   await fs.writeFile(path.join(STANDALONE_DIR, 'README-CPANEL.txt'), readmeText, 'utf8');
 
-  // 8. Create CloudLinux cPanel compliant ZIP archive (excludes node_modules)
-  console.log('🗜️  5/5: Compressing into cPanel-compatible ZIP archive (excluding node_modules)...');
+  // 8. Create standard cPanel-compliant ZIP archive (excludes node_modules)
+  console.log('🗜️  5/5: Compressing into standard cPanel-compatible ZIP archive (excluding node_modules)...');
   if (fsSync.existsSync(ZIP_OUTPUT)) {
     await fs.unlink(ZIP_OUTPUT);
   }
 
-  // CloudLinux NodeJS Selector forbids a physical node_modules directory in application root.
-  // It manages its own symlink to the nodevenv directory.
+  // Remove local development .env if it was copied by Next.js standalone build
+  const localEnvInStandalone = path.join(STANDALONE_DIR, '.env');
+  if (fsSync.existsSync(localEnvInStandalone)) {
+    await fs.unlink(localEnvInStandalone);
+  }
+
+  // Build standard PKWARE ZIP using helper script (ensures forward-slashes, no './' prefix, 100% cPanel compatibility)
+  const makeZipScript = path.join(ROOT_DIR, 'scripts', 'make-zip.py');
   try {
-    execSync(`tar.exe -a -c --exclude="node_modules" -f "${ZIP_OUTPUT}" -C "${STANDALONE_DIR}" .`, { stdio: 'inherit' });
+    execSync(`python "${makeZipScript}" "${STANDALONE_DIR}" "${ZIP_OUTPUT}"`, { stdio: 'inherit' });
   } catch {
-    // Fallback to powershell Compress-Archive excluding node_modules
-    execSync(`powershell -Command "Get-ChildItem -Path '${STANDALONE_DIR}' -Exclude 'node_modules' | Compress-Archive -DestinationPath '${ZIP_OUTPUT}' -Force"`, { stdio: 'inherit' });
+    // Fallback: tar without leading ./
+    execSync(`tar.exe -a -c --exclude="node_modules" -f "${ZIP_OUTPUT}" -C "${STANDALONE_DIR}" *`, { stdio: 'inherit' });
   }
 
   const stats = await fs.stat(ZIP_OUTPUT);

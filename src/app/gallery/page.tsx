@@ -18,10 +18,10 @@ export default async function Gallery() {
         description="A visual introduction to the A2 concept. Select an image to explore the details."
       />
       <section className="container page-content">
-        <p className="placeholder-note">
+        {/* <p className="placeholder-note">
           All images are generated concepts. They do not depict actual A2 premises, products, or
           staff.
-        </p>
+        </p> */}
         <GalleryViewer gallery={gallery} />
       </section>
     </>
